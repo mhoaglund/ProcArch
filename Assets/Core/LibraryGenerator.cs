@@ -274,19 +274,37 @@ namespace Assets.Core
             //Facade handling. We do this after the pillars because we want the compromised floordims.
             if (RandomE.Chance(0.7f))
             {
-                _floor.Add(
-                    BldgUtils.Facade(
-                        BldgUtils.getFacadeCenters(pillarDims, pillarWidth, myDir, currentFloor), 
-                        pillarWidth, pillarDims.z, pillarDims.x, floorHeight, floorHeight * currentFloor, myDir)
-                    );
+                if (RandomE.Chance(0.7f))
+                {
+                    foreach (MeshDraft slab in BldgUtils.OpenFacade(BldgUtils.getFacadeCenters(pillarDims, pillarWidth, myDir, currentFloor), pillarWidth, pillarDims.z, pillarDims.x, floorHeight, 0.5f, floorHeight * currentFloor, myDir))
+                    {
+                        _floor.Add(slab);
+                    }
+                }
+                else
+                {
+                   _floor.Add(
+                   BldgUtils.Facade(
+                       BldgUtils.getFacadeCenters(pillarDims, pillarWidth, myDir, currentFloor),
+                       pillarWidth,
+                       pillarDims.z,
+                       pillarDims.x,
+                       floorHeight,
+                       floorHeight * currentFloor,
+                       myDir)
+                   );
+                }
+                    
+               
                 if (RandomE.Chance(0.6f)) _floor.Add(BldgUtils.Facade(BldgUtils.getFacadeCenters(pillarDims, pillarWidth, myDir.Next(), currentFloor), pillarWidth, pillarDims.z, pillarDims.x, floorHeight, floorHeight * currentFloor, myDir.Next()));
-                else {
+                else
+                {
                     if (Windows == null) Windows = new MeshDraft();
                     Windows.Add(BldgUtils.Facade(
                      BldgUtils.getFacadeCenters(pillarDims, pillarWidth, myDir.Next(), currentFloor),
                      pillarWidth, pillarDims.z, pillarDims.x, floorHeight, floorHeight * currentFloor, myDir.Next())
                  );
-                } 
+                }
             }
 
             UpdateManifest(currentType, traversability, floorDims, myDir, sidecenters, _pillarCenters);

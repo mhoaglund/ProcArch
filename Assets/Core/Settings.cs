@@ -22,7 +22,7 @@ namespace Assets.Core
         public static readonly int densityLB = 1;
         public static readonly int densityUB = 3;
         public static readonly int rowSize = 5;
-        public static readonly int mapSizeX = 50;
+        public static readonly int mapSizeX = 100;
         public static readonly int mapSizeZ = 200;
 
         //Interstructure Feature Settings

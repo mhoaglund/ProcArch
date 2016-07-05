@@ -248,6 +248,151 @@ namespace Assets.Core
             return _floor.ToArray();
         }
         /// <summary>
+        /// Returns four interlocking pieces of a facade with a port in the middle.
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="width"></param>
+        /// <param name="length"></param>
+        /// <param name="thickness">Pillar thickness for the library that will receive this facade.</param>
+        /// <param name="height">Height of floors for the library that will receive this facade.</param>
+        /// <param name="portSize"></param>
+        /// <param name="elevation"></param>
+        /// <param name="dir"></param>
+        /// <returns></returns>
+        public static MeshDraft[] OpenFacade(Vector3 center, float thickness, float length, float width, float height, float portSize, float elevation, Direction dir)
+        {
+            float shortenedSizeRatio = portSize / 2;
+            var myLength = 0.0f;
+            var myThickness = 0.0f;
+            var side3 = new MeshDraft();
+            var side4 = new MeshDraft();
+            if (dir == Direction.East | dir == Direction.West)
+            {
+                myLength = thickness;
+                myThickness = (width - (thickness * 2));
+            }
+            else
+            {
+                myThickness = thickness;
+                myLength = (length - (thickness * 2));
+            }
+            var _floor = new List<MeshDraft>();
+            //the long sides
+            var longsideheight = ((height - Settings.baseFloorSize.y) * portSize)/ 2;
+            var side1 = MeshE.HexahedronDraft(myThickness, myLength, longsideheight);
+            var side2 = MeshE.HexahedronDraft(myThickness, myLength, longsideheight);
+            side1.Move(center + Vector3.down * ((height - Settings.baseFloorSize.y) / 2));
+            float longtweak = (height / 2) - (longsideheight / 2);
+            side1.Move(Vector3.down * longtweak);
+            side2.Move(center + Vector3.down * ((height - Settings.baseFloorSize.y) / 2));
+            side2.Move(Vector3.up * longtweak);
+
+            //the short sides
+            //TODO: double the port size modifier for the short size so the proportions are better.
+            var shorttweak = 0.0f;
+            if (dir == Direction.East | dir == Direction.West)
+            {
+                var shortsidewidth = (myThickness * shortenedSizeRatio) / 2;
+                shorttweak = (myThickness / 2) - (shortsidewidth / 2);
+                side3 = MeshE.HexahedronDraft(shortsidewidth, myLength, (height * portSize) + (Settings.baseFloorSize.y / 2));
+                side4 = MeshE.HexahedronDraft(shortsidewidth, myLength, (height * portSize) + (Settings.baseFloorSize.y / 2));
+                side3.Move(Vector3.left * shorttweak);
+                side4.Move(Vector3.right * shorttweak);
+            }
+            else
+            {
+                var shortsidewidth = (myLength * shortenedSizeRatio) / 2;
+                shorttweak = (myLength / 2) - (shortsidewidth / 2);
+                side3 = MeshE.HexahedronDraft(myThickness, shortsidewidth, (height * portSize) + (Settings.baseFloorSize.y / 2));
+                side4 = MeshE.HexahedronDraft(myThickness, shortsidewidth, (height * portSize) + (Settings.baseFloorSize.y / 2));
+                side3.Move(Vector3.forward * shorttweak);
+                side4.Move(Vector3.back * shorttweak);
+            }
+            side3.Move(center + Vector3.down * ((height - Settings.baseFloorSize.y) / 2));
+            side4.Move(center + Vector3.down * ((height - Settings.baseFloorSize.y) / 2));
+
+            _floor.Add(side1);
+            _floor.Add(side2);
+            _floor.Add(side3);
+            _floor.Add(side4);
+
+            return _floor.ToArray();
+        }
+
+        /// <summary>
+        /// Puts a bar across the center of an open floor.
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="thickness"></param>
+        /// <param name="length"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="portSize"></param>
+        /// <param name="elevation"></param>
+        /// <param name="dir"></param>
+        /// <returns></returns>
+        public static MeshDraft BarFacade(Vector3 center, float thickness, float length, float width, float height, float portSize, float elevation, Direction dir)
+        {
+            var myLength = 0.0f;
+            var myThickness = 0.0f;
+            if (dir == Direction.East | dir == Direction.West)
+            {
+                myLength = thickness;
+                myThickness = (width - (thickness * 2));
+            }
+            else
+            {
+                myThickness = thickness;
+                myLength = (length - (thickness * 2));
+            }
+            var _floor = new List<MeshDraft>();
+            //the long sides
+            var longsideheight = ((height - Settings.baseFloorSize.y) * portSize) / 2;
+            var bar = MeshE.HexahedronDraft(myThickness, myLength, longsideheight);
+            return bar;
+        }
+
+        /// <summary>
+        /// Returns four interlocking pieces of a facade with a port in the middle.
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="width"></param>
+        /// <param name="length"></param>
+        /// <param name="thickness">Pillar thickness for the library that will receive this facade.</param>
+        /// <param name="height">Height of floors for the library that will receive this facade.</param>
+        /// <param name="portSize"></param>
+        /// <param name="elevation"></param>
+        /// <param name="dir"></param>
+        /// <returns></returns>
+        public static MeshDraft[] RailingFacade(Vector3 center, float thickness, float length, float width, float height, float portSize, float elevation, Direction dir)
+        {
+
+            var myLength = 0.0f;
+            var myThickness = 0.0f;
+            if (dir == Direction.East | dir == Direction.West)
+            {
+                myLength = thickness;
+                myThickness = (width - (thickness * 2));
+            }
+            else
+            {
+                myThickness = thickness;
+                myLength = (length - (thickness * 2));
+            }
+            var _floor = new List<MeshDraft>();
+            var longsideheight = ((height - Settings.baseFloorSize.y) * portSize) / 2;
+            var side1 = MeshE.HexahedronDraft(myThickness, myLength, longsideheight);
+            //the short sides
+            var shortsidewidth = (myLength * portSize) / 2;
+            side1.Move(center + Vector3.down * ((height - Settings.baseFloorSize.y) / 2));
+            float side1tweak = (height / 2) - (longsideheight / 2);
+            side1.Move(Vector3.down * side1tweak);
+
+            _floor.Add(side1);
+
+            return _floor.ToArray();
+        }
+        /// <summary>
         /// Generates a flat floor with a large open gap in the middle. AtriumSize is a ratio expressed as a decimal.
         /// </summary>
         /// <param name="center"></param>
@@ -671,7 +816,7 @@ namespace Assets.Core
             if (dir == Direction.East | dir == Direction.West)
             {
                 myLength = thickness;
-                myThickness = (width - (thickness * 2)) * modifier;
+                myThickness = (width - (thickness * 2)) * modifier; //long edge of facade is 2 pillars shorter than the floor it's on.
             }
             else
             {
@@ -682,6 +827,7 @@ namespace Assets.Core
             draft.Move(center + Vector3.down * ((height - Settings.baseFloorSize.y) / 2));
             return draft;
         }
+
         public static MeshDraft Floor0(Vector3 center, float width, float length, float height)
         {
             var draft = MeshE.HexahedronDraft(width, length, height);
