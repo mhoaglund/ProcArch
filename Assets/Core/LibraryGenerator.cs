@@ -44,16 +44,14 @@ namespace Assets.Core
             Building = Library();
         }
 
-        //TODO: create "fire escape" routine with a series of boxes and ramps on the side of the floors.
-
         private MeshDraft Library()
         {
             floorManifest.Clear();
             pillarWidth = UnityEngine.Random.Range(pillarwidthLB, pillarwidthUB);
             atrium = UnityEngine.Random.Range(atriumLB, atriumUB);
 
-            var maxFloors = UnityEngine.Random.Range(3.0f, Settings.MaxFloors);
-            var floors = (int)Math.Ceiling(UnityEngine.Random.Range(1.0f, maxFloors));
+            var maxFloors = UnityEngine.Random.Range(3, Settings.MaxFloors);
+            var floors = (int)Math.Ceiling((double)(UnityEngine.Random.Range(1, maxFloors)));
             var mylightpoint = Vector3.up * ((Settings.baseFloorHeight * UnityEngine.Random.Range(floors/2, floors)) - (Settings.baseFloorHeight/2));
             lightpoint = myHost.transform.TransformPoint(mylightpoint);
 

@@ -12,7 +12,7 @@ namespace Assets.Core
         //Structure settings
         public static readonly Vector3 baseFloorSize = new Vector3(10.0f, 0.15f, 15.0f);
         public static readonly float baseFloorHeight = 3.0f;
-        public static readonly float MaxFloors = 24.0f;
+        public static readonly int MaxFloors = 24;
 
         //Grotto settings
         public static int grottoResolution = 2;

@@ -32,7 +32,7 @@
             {
                 float2 c = i.uv;
                 c = floor(c) * 0.5;
-                float checker = frac(c.x + c.y) * 2.0;
+                float checker = frac(c.x + c.y);
                 return checker;
             }
             ENDCG
